@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Pong</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="scripts/Pad.js"></script>
+    <script src="scripts/Bola.js"></script>
+    <script src="scripts/Cpu.js"></script>
+    <script src="scripts/Placar.js"></script>
+    <script src="scripts/VerifyWinner.js"></script>
+    
+</head>
+<header>
+    <img src="assets/title.png" alt="dinocrisis" width="1200" height="120">
+</header>
+<body>
+ 
+    <p>A verdadeira destruição começa agora!</p>
+    <div class="gradedojogo">
+    <canvas></canvas>
+    <br/>
+    
+    </div>
+    <button onclick="bola.iniciar()">Iniciar</button>
+    <button onclick="placar.resetScore()">Resetar Jogo</button>
+    <script type="text/javascript">
+
+        canvas = document.querySelector("canvas");
+        canvas.width = 1000;
+        canvas.height = 500; 
+        c = canvas.getContext('2d');
+
+
+        const keyboard={
+            cima: false,
+            baixo: false,
+            esquerda: false,
+            direita: false,
+            jump: false
+        };
+
+        const pad = new Pad (c,keyboard);
+        const bola = new Bola (c, pad);
+        const cpu = new Cpu (c, bola);
+        const placar = new Placar (c);
+        const verifyWinner = new VerifyWinner (c,placar);
+        let pontoJogador1 = 0;
+        let pontoJogador2 = 0;
+        let textWinner = "";
+
+        window.addEventListener('keydown',(event) => 
+        {
+            if(event.keyCode==37){ //esquerda
+                keyboard.esquerda=true;
+            }
+            if(event.keyCode==39){ //direita
+                keyboard.direita=true;
+            }
+            if(event.keyCode==38){ //cima
+                keyboard.cima=true;
+            }
+            if(event.keyCode==40){ //baixo
+                keyboard.baixo=true;
+            }
+            if(event.keyCode==32){ //baixo
+                keyboard.jump=true;
+            }
+        })
+
+        window.addEventListener('keyup',(event) => 
+        {
+            if(event.keyCode==37){ //esquerda
+                keyboard.esquerda=false;
+            }
+            if(event.keyCode==39){ //direita
+                keyboard.direita=false;
+            }
+            if(event.keyCode==38){ //cima
+                keyboard.cima=false;
+            }
+            if(event.keyCode==40){ //baixo
+                keyboard.baixo=false;
+            }
+            if(event.keyCode==32){ //baixo
+                keyboard.jump=false;
+            }
+        })
+
+        
+
+        function game(){
+
+            c.clearRect(0,0, canvas.width, canvas.height);
+            pad.draw();
+            bola.draw();
+            cpu.draw();
+            placar.draw();
+            verifyWinner.draw();
+            requestAnimationFrame(game);
+
+        }
+
+        game();
+         
+
+    </script>
+</body>
+<footer>
+    <span>
+    Desenvolvido por Ricardo Giantomaso &#174;
+    </span>
+</footer>
+</html>
